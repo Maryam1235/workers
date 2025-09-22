@@ -15,13 +15,12 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="font-sans antialiased">
-<div class="min-h-screen bg-gray-100 flex" x-data="{ open: true }">
+<div class="min-h-screen flex" x-data="{ open: true }">
 
     <!-- Sidebar -->
     <aside 
-        class="bg-white shadow h-screen transition-all duration-300"
-        :class="open ? 'w-64' : 'w-20'"
-    >
+        class="fixed top-0 left-0 h-screen bg-white shadow transition-all duration-300 z-20"
+        :class="open ? 'w-64' : 'w-20'">
         <div class="flex items-center justify-between p-4 border-b">
             <span class="font-bold text-lg" x-show="open" x-transition>Dashboard</span>
             <button @click="open = !open" class="p-2 rounded hover:bg-gray-200">
@@ -50,23 +49,28 @@
                 </svg>
                 <span x-show="open" x-transition>Tasks</span>
             </a>
-            <!-- Add more links -->
         </nav>
     </aside>
 
     <!-- Main content -->
-    <div class="flex-1">
+    <div 
+        class="flex-1 transition-all duration-300"
+        :class="open ? 'ml-64' : 'ml-20'"
+    >
+        <!-- Navigation / Top bar -->
         <livewire:layout.navigation />
 
+        <!-- Page Header -->
         @if (isset($header))
-            <header class="bg-white shadow">
+            <header class="bg-white shadow sticky top-0 z-10">
                 <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                     {{ $header }}
                 </div>
             </header>
         @endif
 
-        <main class="p-6">
+        <!-- Page Content -->
+        <main class="p-6 overflow-y-auto max-h-screen">
             {{ $slot }}
         </main>
     </div>
